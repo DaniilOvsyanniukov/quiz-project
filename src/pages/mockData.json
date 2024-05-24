@@ -1,0 +1,88 @@
+[
+    {
+      "id": "1",
+      "name": "Quiz 1",
+      "questions": [
+        {
+          "id": "1",
+          "text": "Question 1",
+          "answers": [
+            { "id": "1", "text": "Answer 1" },
+            { "id": "2", "text": "Answer 2" },
+            { "id": "3", "text": "Answer 3" },
+            { "id": "4", "text": "Answer 4" }
+          ],
+          "correctAnswers": [true, false, false, false]
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "name": "Quiz 2",
+      "questions": [
+        {
+          "id": "1",
+          "text": "Question 1",
+          "answers": [
+            { "id": "1", "text": "Answer 1" },
+            { "id": "2", "text": "Answer 2" },
+            { "id": "3", "text": "Answer 3" },
+            { "id": "4", "text": "Answer 4" }
+          ],
+          "correctAnswers": [false, false, true, false]
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "name": "Quiz 3",
+      "questions": [
+        {
+          "id": "1",
+          "text": "Question 1",
+          "answers": [
+            { "id": "1", "text": "Answer 1" },
+            { "id": "2", "text": "Answer 2" },
+            { "id": "3", "text": "Answer 3" },
+            { "id": "4", "text": "Answer 4" }
+          ],
+          "correctAnswers": [true, false, false, false]
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "name": "Quiz 4",
+      "questions": [
+        {
+          "id": "1",
+          "text": "Question 1",
+          "answers": [
+            { "id": "1", "text": "Answer 1" },
+            { "id": "2", "text": "Answer 2" },
+            { "id": "3", "text": "Answer 3" },
+            { "id": "4", "text": "Answer 4" }
+          ],
+          "correctAnswers": [true, false, false, false]
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "name": "Quiz 5",
+      "questions": [
+        {
+          "id": "1",
+          "text": "Question 1",
+          "answers": [
+            { "id": "1", "text": "Answer 1" },
+            { "id": "2", "text": "Answer 2" },
+            { "id": "3", "text": "Answer 3" },
+            { "id": "4", "text": "Answer 4" }
+          ],
+          "correctAnswers": [true, false, false, false]
+        }
+      ]
+    }
+  ]
+  

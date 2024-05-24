@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Quiz, Question, Answer } from '../types';
+import { Quiz, Question, Answer, QuizProgress } from '../types';
+import { Formik, Form, FieldArray } from 'formik';
+import { useNavigate } from 'react-router-dom';
+import MyButton from '../components/Buttons/MyButton';
+import AnswerItem from '../components/AnswerItem';
 
 interface QuizParams {
     id: string;
@@ -8,50 +12,105 @@ interface QuizParams {
 }
 
 const TakeQuizPage: React.FC = () => {
+    const navigate = useNavigate();
     const { id } = useParams<QuizParams>();
     const [quiz, setQuiz] = useState<Quiz | null>(null);
-    const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
-    const [score, setScore] = useState<number>(0);
     const [timer, setTimer] = useState<number>(0);
+    const [userProgress, setUserProgress] = useState<QuizProgress>(
+        {
+            quizId: "",
+            time: 0,
+            score: 0,
+            answers:[],
+        }
+    );
 
     useEffect(() => {
+        if (!id) return;
         const storedQuizzes = localStorage.getItem("quizzes");
         const parsedQuizzes: Quiz[] = storedQuizzes ? JSON.parse(storedQuizzes) : [];
         const selectedQuiz = parsedQuizzes.find(q => q.id === id);
         setQuiz(selectedQuiz || null);
+
+        const storedProgress = localStorage.getItem("quizProgress");
+        const parsedProgress: QuizProgress[] = storedProgress ? JSON.parse(storedProgress) : [];
+        const currentProgress = parsedProgress.find(progress => progress.quizId === id);
+        if (currentProgress) {
+            setUserProgress(currentProgress);
+            setTimer(currentProgress.time);
+        }
     }, [id]);
 
     useEffect(() => {
         if (quiz) {
-            const timerId = setTimeout(() => {
+            const timerId = setInterval(() => {
                 setTimer(prevTime => prevTime + 1);
             }, 1000);
-            return () => clearTimeout(timerId);
+            return () => clearInterval(timerId);
         }
-    }, [quiz, timer]);
+    }, [quiz]);
 
-    const handleAnswerSelect = (questionId: string, answerIndex: number) => {
-        setSelectedAnswers(prevAnswers => {
-            const newAnswers = [...prevAnswers];
-            const questionIndex = parseInt(questionId, 10);
-            newAnswers[questionIndex] = answerIndex;
-            return newAnswers;
-        });
+    const handleAnswerSelect = (questionIndex: number, answerIndex: number | null) => {
+        if (!userProgress) return;
+
+        const updatedAnswers = [...userProgress.answers];
+        updatedAnswers[questionIndex] = { questionIndex, answerIndex };
+        setUserProgress(prevProgress => ({
+            ...prevProgress,
+            answers: updatedAnswers
+        }));
     };
 
-    const handleSubmitQuiz = () => {
-        if (quiz) {
-            let currentScore = 0;
-            quiz.questions.forEach((question: Question, index: number) => {
-                if (selectedAnswers[index] === question.correctAnswers[0]) {
-                    currentScore++;
+    const calculateScore = (): number => {
+        let score = 0;
+    
+        if (!quiz) {
+            return score;
+        }
+    
+        userProgress.answers.forEach(userAnswer => {
+            const question = quiz.questions[userAnswer.questionIndex];
+            const correctAnswers = question.correctAnswers;
+    
+            if (!correctAnswers || correctAnswers.length === 0) {
+                return;
+            }
+    
+            const answeredIndex = userAnswer.answerIndex as number;
+            const correctIndexes = correctAnswers.reduce((acc, isCorrect, index) => {
+                if (isCorrect) {
+                    acc.push(index);
                 }
-            });
-            setScore(currentScore);
-        }
+                return acc;
+            }, [] as number[]);
+    
+            if (correctIndexes.includes(answeredIndex)) {
+                score++;
+            }
+        });
+        return score;
     };
-
-    if (!quiz) {
+    
+    const handleSubmitQuiz = () => {
+        const storedProgress = localStorage.getItem("quizProgress");
+        const parsedProgress: QuizProgress[] = storedProgress ? JSON.parse(storedProgress) : [];
+        const currentProgressIndex = parsedProgress.findIndex(progress => progress.quizId === id);
+        const currentProgress = {
+            quizId: id ?? "",
+            time: timer,
+            score: calculateScore(),
+            answers: userProgress.answers
+        };
+        if (currentProgressIndex !== -1) {
+            parsedProgress[currentProgressIndex] = currentProgress;
+        } else {
+            parsedProgress.push(currentProgress);
+        }
+        localStorage.setItem("quizProgress", JSON.stringify(parsedProgress));
+        navigate(`/`)
+    };
+    
+    if (!quiz || !userProgress || !id) {
         return <div>Loading...</div>;
     }
 
@@ -59,28 +118,37 @@ const TakeQuizPage: React.FC = () => {
         <div>
             <h1>{quiz.name}</h1>
             <p>Timer: {timer} seconds</p>
-            <ul>
-                {quiz.questions.map((question: Question, index: number) => (
-                    <li key={question.id}>
-                        <h3>{question.text}</h3>
-                        <ul>
-                            {question.answers.map((answer: Answer, answerIndex: number) => (
-                                <li key={answer.id}>
-                                    <input
-                                        type="radio"
-                                        name={`question-${index}`}
-                                        value={answerIndex}
-                                        onChange={() => handleAnswerSelect(question.id, answerIndex)}
-                                    />
-                                    <label>{answer.text}</label>
-                                </li>
-                            ))}
-                        </ul>
-                    </li>
-                ))}
-            </ul>
-            <button onClick={handleSubmitQuiz}>Submit Quiz</button>
-            {score !== null && <p>Your score: {score}</p>}
+            <Formik
+                initialValues={{}}
+                onSubmit={handleSubmitQuiz}
+            >
+                <Form>
+                    <FieldArray name="answers">
+                        {() => (
+                            <ul>
+                                {quiz.questions.map((question: Question, questionIndex: number) => (
+                                    <li key={question.id}>
+                                        <h3>{question.text}</h3>
+                                        <ul>
+                                            {question.answers.map((answer: Answer, answerIndex: number) => (
+                                                <AnswerItem 
+                                                key={answer.id}
+                                                answer={answer}
+                                                answerIndex={answerIndex}
+                                                questionIndex={questionIndex}
+                                                checkedAnswer={userProgress.answers[questionIndex]?.answerIndex === answerIndex}
+                                                handleAnswerSelect={() => handleAnswerSelect(questionIndex, answerIndex)}/>
+                                            ))}
+                                        </ul>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </FieldArray>
+                    <MyButton type="submit" buttonText="Submit Quiz" />
+                    <MyButton onClick={() => navigate(`/`)} buttonText="Cancel" className="ml-2" />
+                </Form>
+            </Formik>
         </div>
     );
 };
