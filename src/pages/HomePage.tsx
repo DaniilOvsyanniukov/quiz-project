@@ -12,6 +12,7 @@ const HomePage: React.FC = () => {
     const [progress, setProgress] = useState<QuizProgress[] | null>([]);
     const [isCreateQuizFormOpen, setIsCreateQuizFormOpen] = useState<boolean>(false);
     const [editingQuiz, setEditingQuiz] = useState<Quiz | null>(null);
+    const [searchQuery, setSearchQuery] = useState<string>('');
 
     useEffect(() => {
         getQuizzesFromLocalStorage().then((quizzesFromStorage) => {
@@ -29,8 +30,6 @@ const HomePage: React.FC = () => {
         });
     }, []);
     
-    
-
     const deleteQuizFromLocalStorage = (quizId: string): void => {
         const updatedQuizzes = quizzes.filter((quiz) => quiz.id !== quizId);
         setQuizzes(updatedQuizzes);
@@ -48,12 +47,25 @@ const HomePage: React.FC = () => {
         });
     };
 
+    const filteredQuizzes = quizzes.filter(quiz =>
+        quiz.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     return (
-        <div>
-            <h1>Quiz List</h1>
-            <MyButton onClick={() => handleFormOpen()} buttonText="Add Quiz" className="ml-2" />
-            <ul>
-                {quizzes.map((quiz) => {
+        <div className="min-h-screen bg-gray-100 flex flex-col items-center p-4">
+            <h1 className="text-3xl font-bold mb-4">Quiz List</h1>
+            <div className="mb-4 w-full max-w-4xl">
+                <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search quiz by name..."
+                    className="border border-gray-300 rounded px-4 py-2 w-full"
+                />
+            </div>
+            <MyButton onClick={() => handleFormOpen()} buttonText="Add Quiz" className="mb-4" />
+            <ul className="w-full max-w-4xl">
+                {filteredQuizzes.map((quiz) => {
                     const quizProgress = progress?.find((item) => item.quizId === quiz.id);
                     return (
                         <QuizItem

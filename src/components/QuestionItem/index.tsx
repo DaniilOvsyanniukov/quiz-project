@@ -12,9 +12,16 @@ interface QuestionProps {
 
 const QuestionItem: React.FC<QuestionProps> = ({ index, remove, values }) => {
     return (
-        <li key={index}>
-            <Field name={`questions[${index}].text`} type="text" placeholder="Question" />
-            <MyButton onClick={remove} buttonText="Delete Question" className="ml-2" />
+        <li key={index} className="p-4 mb-4 bg-white rounded shadow">
+            <Field
+                name={`questions[${index}].text`}
+                type="text"
+                placeholder="Question"
+                className="w-full p-2 border rounded mb-2"
+            />
+            <div className="flex justify-end mb-2">
+                <MyButton onClick={remove} buttonText="Delete Question" className="bg-red-500 hover:bg-red-700 text-white" />
+            </div>
             <FieldArray name={`questions[${index}].answers`}>
                 {({ push: pushAnswer, remove: removeAnswer }) => (
                     <ul>
@@ -27,9 +34,13 @@ const QuestionItem: React.FC<QuestionProps> = ({ index, remove, values }) => {
                                 correctAnswers={values.questions[index].correctAnswers}
                             />
                         ))}
-                        <MyButton onClick={() => pushAnswer({ id: Date.now().toString(), text: '', correct: false })}
-                            buttonText="Add Answer" 
-                            className="ml-2" />
+                        <div className="flex justify-end mt-2">
+                            <MyButton
+                                onClick={() => pushAnswer({ id: Date.now().toString(), text: '', correct: false })}
+                                buttonText="Add Answer"
+                                className="bg-blue-500 hover:bg-blue-700 text-white"
+                            />
+                        </div>
                     </ul>
                 )}
             </FieldArray>

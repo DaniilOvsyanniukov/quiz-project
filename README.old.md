@@ -1,2 +1,0 @@
-# quiz-project
-quiz-project

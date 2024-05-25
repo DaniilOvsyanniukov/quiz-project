@@ -1,46 +1,45 @@
-# Getting Started with Create React App
+Проект "Quiz App"
+Привіт! Цей проект - веб-додаток з викторинами, який дозволяє користувачам створювати, редагувати та проходити квізи, а також зберігати свої результати. Нижче наведено кроки для запуску проекту та опис його функціональності.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Як запустити
+Клонуйте репозиторій
+git clone https://github.com/DaniilOvsyanniukov/quiz-project.git
 
-## Available Scripts
 
-In the project directory, you can run:
+Встановіть залежності
+yarn install
 
-### `yarn start`
+Запустіть додаток
+yarn start
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Відкрийте браузер та перейдіть за посиланням
+http://localhost:3000
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
 
-### `yarn test`
+Опис проекту
+Цей проект розроблено для навчальних цілей та дозволяє користувачам:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Створювати квізи: Додавайте питання та відповіді, щоб створити власні квізи.
 
-### `yarn build`
+Редагувати квізи: Змінюйте питання та відповіді у вже існуючих квізах.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Проходити квізи: Пройдіть квіз та перевірте свої знання.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Зберігати результати: Результати квізів автоматично зберігаються, щоб ви могли повернутися до них пізніше.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Технології
+Проект реалізовано з використанням таких технологій:
 
-### `yarn eject`
+React.js: JavaScript-бібліотека для створення користувацьких інтерфейсів.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+React Router: Бібліотека для навігації між сторінками в React-додатках.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Formik: Бібліотека для роботи з формами в React.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+LocalStorage: Для зберігання даних про квізи та результати.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Джерело даних
+Квізи та результати зберігаються локально в браузері користувача за допомогою LocalStorage. Це означає, що вони залишаються доступними лише на цьому пристрої та браузері.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Висновок
+Цей проект дозволяє користувачам не лише тестувати свої знання, але й створювати та редагувати власні квізи. Надіємося, він буде корисним та цікавим для вас! Якщо у вас виникли питання або пропозиції, будь ласка, зв'яжіться з нами.
