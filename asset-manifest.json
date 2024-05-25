@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/DaniilOvsyanniukov.github.io/quiz-project.git/static/css/main.34a5e9a1.css",
-    "main.js": "/DaniilOvsyanniukov.github.io/quiz-project.git/static/js/main.9fffc858.js",
-    "index.html": "/DaniilOvsyanniukov.github.io/quiz-project.git/index.html",
-    "main.34a5e9a1.css.map": "/DaniilOvsyanniukov.github.io/quiz-project.git/static/css/main.34a5e9a1.css.map",
-    "main.9fffc858.js.map": "/DaniilOvsyanniukov.github.io/quiz-project.git/static/js/main.9fffc858.js.map"
+    "main.css": "/quiz-project/static/css/main.34a5e9a1.css",
+    "main.js": "/quiz-project/static/js/main.9fffc858.js",
+    "index.html": "/quiz-project/index.html",
+    "main.34a5e9a1.css.map": "/quiz-project/static/css/main.34a5e9a1.css.map",
+    "main.9fffc858.js.map": "/quiz-project/static/js/main.9fffc858.js.map"
   },
   "entrypoints": [
     "static/css/main.34a5e9a1.css",
